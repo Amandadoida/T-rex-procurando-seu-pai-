@@ -3,10 +3,17 @@ var solopassado;
 var solopassadofoto;
 var solotrapaceiro;
 var nuvemantiquada,nuvemantiquadaimage;
+var obstaculoone,obstaculotwo,obstaculothree,obstaculofour,obstaculofive,obstaculosix;
 function preload(){
     dinognomofoto = loadAnimation("trex1.png", "trex3.png", "trex4.png");
     solopassadofoto = loadImage("ground2.png");
     nuvemantiquadaimage=loadImage("cloud.png");
+    obstaculoone=loadImage("obstacle1.png");
+    obstaculotwo=loadImage("obstacle2.png");
+    obstaculothree=loadImage("obstacle3.png");
+    obstaculofour=loadImage("obstacle4.png");
+    obstaculofive=loadImage("obstacle5.png");
+    obstaculosix=loadImage("obstacle6.png");
 }
 
 function setup(){
@@ -20,8 +27,9 @@ createCanvas(600,200);
     solopassado.x = width/2;
     solotrapaceiro=createSprite(200,190,400,10);
     solotrapaceiro.visible=false;
-    var number = Math.round(random(1,100));
-    console.log(number);
+    //var number = Math.round(random(1,100));
+    //console.log(number);
+    console.log("Oi"+5);
 }
 
 function draw(){
@@ -37,6 +45,7 @@ if(keyDown("space")&&dinognomo.y>=150){
     dinognomo.velocityY = dinognomo.velocityY + 1;
     dinognomo.collide(solotrapaceiro);
 createNuvem();
+createobstaculo();
 drawSprites();
 }
 
@@ -48,6 +57,35 @@ function createNuvem(){
         nuvemantiquada.velocityX=-3; 
         nuvemantiquada.depth=dinognomo.depth;
         dinognomo.depth=dinognomo.depth+1;
+        nuvemantiquada.lifetime = 250;
     }
   
+}
+function createobstaculo(){
+    if(frameCount%60===0){
+        var obstaculodoidao =createSprite(600,165,10,40);
+obstaculodoidao.velocityX=-6;
+var numerojurassico=Math.round(random(1,6));
+switch (numerojurassico) {
+    case 1:obstaculodoidao.addImage(obstaculoone);
+        break;
+        case 2:obstaculodoidao.addImage(obstaculotwo);
+        break;
+        case 3:obstaculodoidao.addImage(obstaculothree);
+        break;
+        case 4:obstaculodoidao.addImage(obstaculofour);
+        break;
+        case 5:obstaculodoidao.addImage(obstaculofive);
+        break;
+        case 6:obstaculodoidao.addImage(obstaculosix);
+        break;
+
+
+    default:
+        break;
+}
+obstaculodoidao.scale=0.5;
+obstaculodoidao.lifetime=300;
+
+    }
 }
