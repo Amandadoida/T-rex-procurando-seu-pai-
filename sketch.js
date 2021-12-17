@@ -13,6 +13,9 @@ var quedesgosto;
 var desgostoimage;
 var maisumachancefilho;
 var felicidadeimage;
+var somsaltitante;
+var somtristonho;
+var somrico;
 
 function preload(){
     dinognomofoto = loadAnimation("trex1.png", "trex3.png", "trex4.png");
@@ -27,6 +30,9 @@ function preload(){
     desgostoimage=loadImage("gameOver.png");
     felicidadeimage=loadImage("restart.png");
     dinocommedo=loadAnimation("trex_collided.png");
+    somsaltitante=loadSound ("jump.mp3");
+    somtristonho=loadSound ("die.mp3");
+    somrico=loadSound("checkPoint.mp3");
 }
 
 function setup(){
@@ -61,19 +67,26 @@ text("Dino perto de seu pai:"+pertodeseupai,450,50);
 console.log("Estado do jogo:", estado);
 if(estado === jogandofeliz){
     
-    solopassado.velocityX=-2;
+    solopassado.velocityX=-(2+pertodeseupai/100);
     if(solopassado.x<0) {
         solopassado.x=width/2;
     }
     if(keyDown("space")&&dinognomo.y>=150){
         dinognomo.velocityY = -12;
+        somsaltitante.play();
     }
         dinognomo.velocityY = dinognomo.velocityY + 1;
         createNuvem();
         createobstaculo();
         pertodeseupai=pertodeseupai+Math.round(frameCount/60);
+
+        if(pertodeseupai>0 && pertodeseupai%100===0){
+            somrico.play();
+        }
+
         if(obstaculosirritantes.isTouching(dinognomo)){
             estado=jogandotriste;
+            somtristonho.play();
         }
 } else if(estado === jogandotriste){
    // background("darkgreen");
@@ -110,7 +123,7 @@ function createNuvem(){
 function createobstaculo(){
     if(frameCount%60===0){
         var obstaculodoidao =createSprite(600,165,10,40);
-obstaculodoidao.velocityX=-6;
+obstaculodoidao.velocityX=-(6+pertodeseupai/100);
 var numerojurassico=Math.round(random(1,6));
 switch (numerojurassico) {
     case 1:obstaculodoidao.addImage(obstaculoone);
