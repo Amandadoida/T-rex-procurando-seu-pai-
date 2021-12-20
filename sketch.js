@@ -16,6 +16,7 @@ var felicidadeimage;
 var somsaltitante;
 var somtristonho;
 var somrico;
+var mensagemlouca = "Eu sou uma mensagem louca";
 
 function preload(){
     dinognomofoto = loadAnimation("trex1.png", "trex3.png", "trex4.png");
@@ -49,7 +50,7 @@ createCanvas(600,200);
     solotrapaceiro.visible=false;
     //var number = Math.round(random(1,100));
     //console.log(number);
-    console.log("Oi"+5);
+    //console.log("Oi"+5);
     nuvensbarraqueiras = new Group();
     obstaculosirritantes = new Group();
     dinognomo.setCollider("circle", 0, 0, 40);
@@ -61,10 +62,11 @@ createCanvas(600,200);
 }
 
 function draw(){
+//console.log(mensagemlouca); 
 //console.log(dinognomo.y);
 background("darkseagreen");
 text("Dino perto de seu pai:"+pertodeseupai,450,50);
-console.log("Estado do jogo:", estado);
+//console.log("Estado do jogo:", estado);
 if(estado === jogandofeliz){
     
     solopassado.velocityX=-(2+pertodeseupai/100);
@@ -78,7 +80,7 @@ if(estado === jogandofeliz){
         dinognomo.velocityY = dinognomo.velocityY + 1;
         createNuvem();
         createobstaculo();
-        pertodeseupai=pertodeseupai+Math.round(frameCount/60);
+        pertodeseupai=pertodeseupai+Math.round(frameRate()/60);
 
         if(pertodeseupai>0 && pertodeseupai%100===0){
             somrico.play();
@@ -88,15 +90,26 @@ if(estado === jogandofeliz){
             estado=jogandotriste;
             somtristonho.play();
         }
+        quedesgosto.visible=false;
+maisumachancefilho.visible=false;
+
 } else if(estado === jogandotriste){
+
    // background("darkgreen");
     solopassado.velocityX=0;
     dinognomo.velocityY=0;
     dinognomo.changeAnimation("fracasso",dinocommedo);
 obstaculosirritantes.setVelocityXEach(0);
 nuvensbarraqueiras.setVelocityXEach(0);
+if(mousePressedOver(maisumachancefilho)){
+    novachance();
+}
 obstaculosirritantes.setLifetimeEach(-1);
 nuvensbarraqueiras.setLifetimeEach(-1);
+quedesgosto.visible=true;
+maisumachancefilho.visible=true;
+
+
 }
 
     
@@ -104,7 +117,20 @@ nuvensbarraqueiras.setLifetimeEach(-1);
 
     dinognomo.collide(solotrapaceiro);
 
+    
+
 drawSprites();
+}
+
+function novachance(){
+    estado=jogandofeliz;
+quedesgosto.visible=false;
+maisumachancefilho.visible=false;
+nuvensbarraqueiras.destroyEach();
+obstaculosirritantes.destroyEach();
+dinognomo.changeAnimation("correndo",dinognomofoto);
+pertodeseupai=0;
+
 }
 
 function createNuvem(){
